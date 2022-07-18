@@ -49,10 +49,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Equipment.Name)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <td>              
+               <form  asp-action="EndRental" method="post" >
+                    <input type="hidden" value=@item.Id name="rentalId">
+                    <button>End rental</button>
+                </form>
             </td>
         </tr>
 }

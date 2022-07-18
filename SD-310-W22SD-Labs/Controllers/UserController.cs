@@ -26,18 +26,34 @@ namespace SD_310_W22SD_Labs.Controllers
             Customer customer = _db.Customers.First(c=> c.Id== customerId);
             Equipment equipment = _db.Equipment.First(c=> c.Id== equipmentId);
             Rental rental = new Rental();
-            rental.Customer = customer;
-            rental.Equipment = equipment;
-            rental.IsCurrent = true;
-            rental.RentalDate = DateTime.Now;
-            rental.RentalHrs = rentalHrs;
-            customer.RentalHrs -= rentalHrs;
-            customer.Rentals.Add(rental);
-            equipment.Rentals.Add(rental);
-            equipment.Quantity -= 1;
-            _db.Rentals.Add(rental);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
+            if(customer.RentalHrs >= rentalHrs)
+            {
+                if(equipment.Quantity > 1)
+                {
+                    rental.Customer = customer;
+                    rental.Equipment = equipment;
+                    rental.IsCurrent = true;
+                    rental.RentalDate = DateTime.Now;
+                    rental.RentalHrs = rentalHrs;
+                    customer.RentalHrs -= rentalHrs;
+                    customer.Rentals.Add(rental);
+                    equipment.Rentals.Add(rental);
+                    equipment.Quantity -= 1;
+                    _db.Rentals.Add(rental);
+                    _db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("EquipmentQuantityError");
+                }
+               
+            }
+            else
+            {
+                return RedirectToAction("CustomerHoursError");
+            }
+            
         }
         public IActionResult Rentals()
         {
@@ -48,6 +64,36 @@ namespace SD_310_W22SD_Labs.Controllers
         {
             List<Customer> customers = _db.Customers.OrderBy(c => c.UserName).ToList();
             return View(customers);
+        }
+
+        public IActionResult CustomerHoursError()
+        {
+            ViewBag.Message = "Sorry, You do not have sufficient rental hours";
+            return View();
+        }
+        public IActionResult EquipmentQuantityError()
+        {
+            ViewBag.Message = "Sorry, Equipment is not available";
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult EndRental(int? rentalId)
+        {
+            Rental rental = _db.Rentals.Include(r=> r.Equipment).First(r => r.Id == rentalId);
+            if(rental.IsCurrent == true)
+            {
+                rental.IsCurrent = false;
+                Equipment equipment = rental.Equipment;
+                equipment.Quantity += 1;
+                _db.SaveChanges();
+                return RedirectToAction("Rentals");
+            }
+            else
+            {
+                return RedirectToAction("Rentals");
+            }
+            
         }
     }
     
