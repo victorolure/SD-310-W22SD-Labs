@@ -55,10 +55,24 @@ namespace SD_310_W22SD_Labs.Controllers
             }
             
         }
-        public IActionResult Rentals()
+        public IActionResult Rentals(string?sortBy)
         {
-            List<Rental> rentals = _db.Rentals.OrderBy(r=> r.Customer.UserName).Include(r=> r.Customer).Include(r=> r.Equipment).ToList();
-            return View(rentals);
+            IQueryable<Rental> rentals = _db.Rentals.Include(r => r.Customer).Include(r => r.Equipment);
+
+
+            if (sortBy == null)
+            {
+                rentals = rentals.OrderBy(r => r.IsCurrent);
+                return View(rentals.ToList());
+            }else if(sortBy== "customerName")
+            {
+                rentals = rentals.OrderBy(r => r.Customer.UserName);
+                return View(rentals.ToList());
+            }else
+            {
+                rentals = rentals.OrderBy(r => r.Equipment.Name);
+                return View(rentals.ToList());
+            }
         }
         public IActionResult Customers()
         {

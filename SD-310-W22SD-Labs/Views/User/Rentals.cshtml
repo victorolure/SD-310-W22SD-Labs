@@ -4,7 +4,13 @@
     ViewData["Title"] = "Rentals";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<form asp-action="Rentals" method="get">
+    <select name="sortBy">
+    <option value="customerName">Customer Name</option>
+    <option value="equipmentName">Equipment Name</option>
+    </select>
+    <button>Sort</button>
+</form>
 <h1>Rentals</h1>
 
 <p>
