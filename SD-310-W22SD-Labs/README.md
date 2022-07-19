@@ -1,4 +1,4 @@
-﻿**DIFFERECES BETWEEN SQL & NOSQL DATABASES**
+﻿**DIFFERENCES BETWEEN SQL & NOSQL DATABASES**
 
 - SQL databases are databases that are relational and have their data structure strictly based on tables
 - NOSQL databases are non- relational databases and their data structure can be based on documents, graphs
