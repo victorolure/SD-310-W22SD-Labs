@@ -1,0 +1,67 @@
+﻿@model IEnumerable<SD_310_W22SD_Labs.Models.Rental>
+
+@{
+    ViewData["Title"] = "Rentals";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form asp-action="Rentals" method="get">
+    <select name="sortBy">
+    <option value="customerName">Customer Name</option>
+    <option value="equipmentName">Equipment Name</option>
+    </select>
+    <button>Sort</button>
+</form>
+<h1>Rentals</h1>
+
+<p>
+    <a asp-action="Index">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RentalHrs)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RentalDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCurrent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Equipment)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RentalHrs)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RentalDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCurrent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Equipment.Name)
+            </td>
+            <td>              
+               <form  asp-action="EndRental" method="post" >
+                    <input type="hidden" value=@item.Id name="rentalId">
+                    <button>End rental</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

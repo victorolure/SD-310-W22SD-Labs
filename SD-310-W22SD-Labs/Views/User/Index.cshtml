@@ -1,0 +1,16 @@
+﻿@using SD_310_W22SD_Labs.Models.ViewModels
+@model CustomerEquipmentSelectViewModel
+
+<form asp-action="CreateRental" method="post">
+    <select asp-items="Model.CustomerSelect" name="customerId"></select>
+    <select asp-items="Model.EquipmentSelect" name="equipmentId"></select>
+    <input type="text" name="rentalHrs"/>
+    <button>Create Rental</button>
+</form>
+
+<p>
+    <a asp-action="Rentals">Show All Rentals</a>
+</p>
+<p>
+    <a asp-action="Customers">Show All Customers</a>
+</p>
